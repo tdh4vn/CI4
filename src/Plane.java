@@ -8,7 +8,9 @@ import java.io.IOException;
  * Created by hungtran on 5/29/16.
  */
 
-public class Plane {
+
+
+public abstract class Plane {
     public int positionX;
     public int positionY;
     public BufferedImage image;//Sprite
@@ -16,7 +18,6 @@ public class Plane {
     public int healthPoint;
     public int speedX;
     public int speedY;
-
 
     public Plane(){//ham khoi tao
         //constructor
@@ -45,6 +46,7 @@ public class Plane {
     public void update(){
         this.positionX += this.speedX;
         this.positionY += this.speedY;
+
     }
     public void draw(Graphics g){
         g.drawImage(this.image, this.positionX, this.positionY, null);

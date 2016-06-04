@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by hungtran on 5/28/16.
@@ -13,6 +14,8 @@ public class GameWindow extends Frame implements Runnable{
     Plane player1;
     Plane player2;
     Plane player3;
+
+    ArrayList<Plane> enemies;
 
     BufferedImage bufferedImage;
     public GameWindow(){
@@ -56,10 +59,10 @@ public class GameWindow extends Frame implements Runnable{
             }
         });
 
-        player1 = new Plane(100, 200);
+        player1 = new PlaneFighter(100, 200);
         player3 = player1;
         System.out.println("Da khoi tao xong");
-        player2 = new Plane();
+        player2 = new PlaneSuppoter();
 
         this.addMouseMotionListener(new MouseMotionListener() {
             @Override
@@ -70,6 +73,32 @@ public class GameWindow extends Frame implements Runnable{
             @Override
             public void mouseMoved(MouseEvent e) {
                 player2.move(e.getX(), e.getY());
+            }
+        });
+        this.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ((IFighter)player2).shot();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
             }
         });
         this.addKeyListener(new KeyListener() {
@@ -94,6 +123,9 @@ public class GameWindow extends Frame implements Runnable{
                     case KeyEvent.VK_D:
                         player3.speedX = 3;
                         break;
+                    case KeyEvent.VK_SPACE:
+                        ((IFighter)player1).shot();
+                        break;
                 }
             }
             @Override
@@ -113,12 +145,31 @@ public class GameWindow extends Frame implements Runnable{
 
     }
 
-
+    long count = 0;
     public void gameUpdate(){
         player1.update();
         player2.update();
+        count++;
+        if(count == 600){
+            count = 0;
+            if (player2 instanceof ISupport){
+                if (kc(player1.positionX, player1.positionY, player2.positionX, player2.positionY) <= 100.0f) {
+                    System.out.println("abdd");
+                    ((ISupport) player2).bonusHP(player1);
+                }
+            }
+            if (player1 instanceof ISupport){
+                System.out.println("abdd");
+                if (kc(player1.positionX, player1.positionY, player2.positionX, player2.positionY) <= 100.0f) {
+                    ((ISupport) player1).bonusHP(player2);
+                }
+            }
+        }
     }
 
+    private double kc(int x1, int y1, int x2, int y2){
+        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    }
 
     @Override
     public void update(Graphics g) {//de? ve~//hieu la ham draw
@@ -136,6 +187,7 @@ public class GameWindow extends Frame implements Runnable{
     public void run() {
         while (true){
             try {
+
                 Thread.sleep(17);
                 gameUpdate();
                 repaint();
