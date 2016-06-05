@@ -59,8 +59,8 @@ public class GameWindow extends Frame implements Runnable{
             }
         });
 
-        player1 = new PlaneFighter(100, 200);
-        player3 = player1;
+        player1 = PlaneFighter.getInstance();
+        player3 = PlaneFighter.getInstance();
         System.out.println("Da khoi tao xong");
         player2 = new PlaneSuppoter();
 
@@ -78,7 +78,7 @@ public class GameWindow extends Frame implements Runnable{
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ((IFighter)player2).shot();
+
             }
 
             @Override
@@ -118,10 +118,10 @@ public class GameWindow extends Frame implements Runnable{
                         player3.speedX = -3;
                         break;
                     case KeyEvent.VK_S:
-                        player3.speedY = 3;
+                        player1.speedY = 3;
                         break;
                     case KeyEvent.VK_D:
-                        player3.speedX = 3;
+                        player1.speedX = 3;
                         break;
                     case KeyEvent.VK_SPACE:
                         ((IFighter)player1).shot();

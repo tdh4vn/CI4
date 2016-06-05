@@ -1,14 +1,50 @@
+import java.awt.*;
+import java.util.ArrayList;
+
 /**
  * Created by hungtran on 6/4/16.
  */
 public class PlaneFighter extends Plane implements IFighter, IStrategy {
-    public PlaneFighter(int x, int y) {
+
+    private ArrayList<Bullet> listBullets;
+
+    private static PlaneFighter sharePointer;
+
+    public ArrayList<Bullet> getListBullets() {
+        return listBullets;
+    }
+
+    public static PlaneFighter getInstance(){
+        if(sharePointer == null){
+            sharePointer = new PlaneFighter(200, 300);
+        }
+        return sharePointer;
+    }
+
+    private PlaneFighter(int x, int y) {
         super(x, y);
+        listBullets = new ArrayList<>();
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        for (Bullet b : listBullets){
+            b.update();
+        }
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        super.draw(g);
+        for (Bullet b : listBullets){
+            b.draw(g);
+        }
     }
 
     @Override
     public void shot() {
-        System.out.println("Shot");
+        listBullets.add(new Bullet(this.positionX, this.positionY));
     }
 
     @Override
