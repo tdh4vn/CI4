@@ -15,7 +15,7 @@ public class GameWindow extends Frame implements Runnable{
     Plane player2;
     Plane player3;
 
-    ArrayList<Plane> enemies;
+    ArrayList<PlaneEnemy> enemies;
 
     BufferedImage bufferedImage;
     public GameWindow(){
@@ -64,6 +64,24 @@ public class GameWindow extends Frame implements Runnable{
         System.out.println("Da khoi tao xong");
         player2 = new PlaneSuppoter();
 
+
+        enemies = new ArrayList<>();
+        enemies.add(new PlaneEnemy(100, 220));
+        enemies.add(new PlaneEnemy(150, 230));
+        enemies.add(new PlaneEnemy(130, 210));
+        enemies.add(new PlaneEnemy(110, 220));
+        enemies.add(new PlaneEnemy(130, 100));
+        enemies.add(new PlaneEnemy(120, 200));
+        enemies.add(new PlaneEnemy(110, 300));
+
+
+
+        for (IRocketListener iRocketListener : enemies){
+            ((Subject)player1).addRocketListener(iRocketListener);
+        }
+
+        ((Subject)player1).addRocketListener(new SpaceShip());
+
         this.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -83,7 +101,12 @@ public class GameWindow extends Frame implements Runnable{
 
             @Override
             public void mousePressed(MouseEvent e) {
-
+                if (e.getButton() == MouseEvent.BUTTON3){
+                    ((Subject)player1).fireRocket();
+                }
+                if (e.getButton() == MouseEvent.BUTTON2){
+                    ((Subject)player1).fireRocket();
+                }
             }
 
             @Override
@@ -147,6 +170,9 @@ public class GameWindow extends Frame implements Runnable{
 
     long count = 0;
     public void gameUpdate(){
+        for (PlaneEnemy p : enemies){
+            p.update();
+        }
         player1.update();
         player2.update();
         count++;
@@ -173,11 +199,15 @@ public class GameWindow extends Frame implements Runnable{
 
     @Override
     public void update(Graphics g) {//de? ve~//hieu la ham draw
+
         if(bufferedImage == null){
             bufferedImage = new BufferedImage(480, 600, 1);
         }
         Graphics bufferedGraphics = bufferedImage.getGraphics();
         bufferedGraphics.drawImage(background, 0, 0, null);
+        for (PlaneEnemy p : enemies){
+            p.draw(bufferedGraphics);
+        }
         player1.draw(bufferedGraphics);
         player2.draw(bufferedGraphics);
         g.drawImage(bufferedImage, 0, 0,null);
@@ -187,7 +217,6 @@ public class GameWindow extends Frame implements Runnable{
     public void run() {
         while (true){
             try {
-
                 Thread.sleep(17);
                 gameUpdate();
                 repaint();

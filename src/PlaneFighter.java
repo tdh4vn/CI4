@@ -4,7 +4,9 @@ import java.util.ArrayList;
 /**
  * Created by hungtran on 6/4/16.
  */
-public class PlaneFighter extends Plane implements IFighter, IStrategy {
+public class PlaneFighter extends Plane implements IFighter, IStrategy, Subject {
+
+    private ArrayList<IRocketListener> iRocketListenerList;
 
     private ArrayList<Bullet> listBullets;
 
@@ -23,6 +25,7 @@ public class PlaneFighter extends Plane implements IFighter, IStrategy {
 
     private PlaneFighter(int x, int y) {
         super(x, y);
+        iRocketListenerList = new ArrayList<>();
         listBullets = new ArrayList<>();
     }
 
@@ -44,11 +47,34 @@ public class PlaneFighter extends Plane implements IFighter, IStrategy {
 
     @Override
     public void shot() {
-        listBullets.add(new Bullet(this.positionX, this.positionY));
+        listBullets.add(new Bullet(this.positionX, this.positionY, this));
+    }
+
+    @Override
+    public void deleteBullet(Bullet bullet) {
+        System.out.println("Xoa dan");
     }
 
     @Override
     public void dropBom() {
         System.out.println("asdas");
+    }
+
+    @Override
+    public void addRocketListener(IRocketListener iRocketListener) {
+        iRocketListenerList.add(iRocketListener);
+    }
+
+    @Override
+    public void deleteRocketListener(IRocketListener iRocketListener) {
+        iRocketListenerList.remove(iRocketListener);
+    }
+
+    @Override
+    public void fireRocket() {
+        System.out.println("Ban Ten Lua");
+        for (IRocketListener iRocketListener : iRocketListenerList){
+            iRocketListener.planeFireRocket();
+        }
     }
 }

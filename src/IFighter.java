@@ -3,4 +3,5 @@
  */
 public interface IFighter {
     void shot();
+    void deleteBullet(Bullet bullet);
 }

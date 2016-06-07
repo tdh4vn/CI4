@@ -8,11 +8,13 @@ import java.io.IOException;
  * Created by hungtran on 6/5/16.
  */
 public class Bullet {
+    IFighter iFighter;
     BufferedImage sprite;
     private int positionX;
     private int positionY;
-    public Bullet(int x, int y) {
+    public Bullet(int x, int y, IFighter iFighter) {
         try {
+            this.iFighter = iFighter;
             sprite = ImageIO.read(new File("Resources/DAN.png"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,5 +53,8 @@ public class Bullet {
 
     public void update(){
         this.positionY -= 5;
+        if(this.positionY < 0){
+            iFighter.deleteBullet(this);
+        }
     }
 }

@@ -23,7 +23,7 @@ public class Plane {
         healthPoint = 200;
         maxHP = 200;
         try {
-            this.image = ImageIO.read(new File("Resources/PLANE4.png"));
+            this.image = ImageIO.read(new File("Resources/PLANE1.png"));
             this.hpBar = ImageIO.read(new File("Resources/hp.png"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,7 +35,7 @@ public class Plane {
         healthPoint = 200;
         maxHP = 200;
         try {
-            this.image = ImageIO.read(new File("Resources/PLANE4.png"));
+            this.image = ImageIO.read(new File("Resources/PLANE1.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
