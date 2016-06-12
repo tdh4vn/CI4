@@ -50,9 +50,6 @@ public class Plane {
         this.positionY += this.speedY;
     }
     public void draw(Graphics g){
-        g.drawImage(this.image, this.positionX, this.positionY, null);
-        g.drawImage(this.hpBar, this.positionX, this.positionY + 65,
-                                this.positionX + 70 * healthPoint/maxHP, this.positionY + 79,
-                                0, 0, 200, 14, null);
+        g.drawImage(this.image, this.positionX - GameWindow.dx, this.positionY - GameWindow.dy, null);
     }
 }

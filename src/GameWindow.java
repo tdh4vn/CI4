@@ -10,16 +10,19 @@ import java.util.ArrayList;
  * Created by hungtran on 5/28/16.
  */
 public class GameWindow extends Frame implements Runnable{
+    public static int dx;
+    public static int dy;
     Image background;
     Plane player1;
     Plane player2;
     Plane player3;
-
+    Cat cat;
     ArrayList<PlaneEnemy> enemies;
 
     BufferedImage bufferedImage;
     public GameWindow(){
-        this.setSize(480, 600);
+        cat = new Cat(100, 100);
+        this.setSize(800, 600);
         this.setTitle("1945");
         this.setVisible(true);
         this.addWindowListener(new WindowListener() {
@@ -170,9 +173,18 @@ public class GameWindow extends Frame implements Runnable{
 
     long count = 0;
     public void gameUpdate(){
+        cat.update();
         for (PlaneEnemy p : enemies){
             p.update();
         }
+
+        if (player3.positionX > 400){
+            GameWindow.dx = player3.positionX - 400;
+        }
+        if (player3.positionY > 300){
+            GameWindow.dy = player3.positionY - 300;
+        }
+
         player1.update();
         player2.update();
         count++;
@@ -201,15 +213,16 @@ public class GameWindow extends Frame implements Runnable{
     public void update(Graphics g) {//de? ve~//hieu la ham draw
 
         if(bufferedImage == null){
-            bufferedImage = new BufferedImage(480, 600, 1);
+            bufferedImage = new BufferedImage(800, 600, 1);
         }
         Graphics bufferedGraphics = bufferedImage.getGraphics();
-        bufferedGraphics.drawImage(background, 0, 0, null);
+        bufferedGraphics.drawImage(background, -dx, -dy, null);
         for (PlaneEnemy p : enemies){
             p.draw(bufferedGraphics);
         }
         player1.draw(bufferedGraphics);
         player2.draw(bufferedGraphics);
+        cat.draw(bufferedGraphics);
         g.drawImage(bufferedImage, 0, 0,null);
     }
 
